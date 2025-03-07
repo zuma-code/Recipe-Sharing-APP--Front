@@ -12,9 +12,9 @@ import IsAnon from "./components/IsAnon/IsAnon";
 
 function App() {
   return (
-    <div className="App">
+    <div className="min-h-screen flex flex-col bg-base-200">
       <Navbar />
-
+      <div className="container mx-auto p-4 flex-grow">
       <Routes>
         <Route path="/" element={<HomePage />} />
 
@@ -42,10 +42,17 @@ function App() {
               <LoginPage />
             </IsAnon>
           }
+                
         />
+         <Route path="/" element={<HomePage />} />
+         {/* <Route path="/recipe/:id" element={<RecipeDetails />} />
+          <Route path="/create" element={<CreateRecipe />} />
+          <Route path="*" element={<NotFound />} /> */}
       </Routes>
+    </div>
     </div>
   );
 }
 
 export default App;
+

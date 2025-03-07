@@ -10,9 +10,28 @@ function Navbar() {
 
   return (
     <nav>
-      <Link to="/">
-        <button>Home</button>
-      </Link>
+      <div className="navbar bg-primary text-white shadow-lg px-6">
+        <div className="flex-1">
+          <Link to="/" className="text-2xl font-bold hover:text-gray-200">
+            🍽️ Recipe Sharing
+          </Link>
+        </div>
+     {/* <Link to="/" className="hover:text-gray-200">Home</Link>*/}
+
+
+      <div className="flex">
+        <ul className="menu menu-horizontal px-1">
+          <li>
+            <Link to="/" className="hover:text-gray-200">Home</Link>
+          </li>
+          <li>
+            <Link to="/create" className="hover:text-gray-200">Add Recipe</Link>
+          </li>
+        </ul>
+      </div>
+
+
+
 
       {isLoggedIn && (
         <>
@@ -29,16 +48,24 @@ function Navbar() {
 
       {!isLoggedIn && (
         <>
-          <Link to="/signup">
+          <Link to="/signup"className="hover:text-gray-200">
             {" "}
             <button>Sign Up</button>{" "}
           </Link>
-          <Link to="/login">
+          <Link to="/login"className="hover:text-gray-200">
             {" "}
             <button>Login</button>{" "}
           </Link>
+          
         </>
+        
+
+
+
+
+        
       )}
+        </div>
     </nav>
   );
 }
