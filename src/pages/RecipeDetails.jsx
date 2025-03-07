@@ -39,17 +39,17 @@ function RecipeDetails() {
           <p className="text-lg">Duration: {recipe.duration} min</p>
           <p className="text-lg">Servings: {recipe.servings}</p>
           <h2 className="text-xl font-semibold mt-4">Ingredients</h2>
-          <ul className="list-disc pl-6">
+       {/*    <ul className="list-disc pl-6">
             {recipe.ingredients.map((ingredient, index) => (
               <li key={index}>{ingredient}</li>
             ))}
-          </ul>
+          </ul> */}
           <h2 className="text-xl font-semibold mt-4">Instructions</h2>
-          <ol className="list-decimal pl-6">
+         {/*  <ol className="list-decimal pl-6">
             {recipe.instructions.map((step, index) => (
               <li key={index}>{step}</li>
             ))}
-          </ol>
+          </ol> */}
           <div className="mt-6 flex gap-4">
             <button onClick={() => navigate(`/edit/${id}`)} className="btn btn-warning">Edit</button>
             <button onClick={handleDelete} className="btn btn-error">Delete</button>

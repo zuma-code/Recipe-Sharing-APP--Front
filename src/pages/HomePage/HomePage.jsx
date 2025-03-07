@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 
-{/*import { RecipeDetails } from "../RecipeDetails";
-import { CreateRecipe } from "./pages/CreateRecipe";
-import { NotFound } from "./pages/NotFound";*/}
+import { Link } from "react-router-dom";
+
+
 
 
 function HomePage() {
@@ -31,6 +31,7 @@ function HomePage() {
               <p>{recipe.cuisine}</p>
               <div className="card-actions justify-end">
                 <a href={`/recipe/${recipe._id}`} className="btn btn-primary">View Recipe</a>
+                
               </div>
             </div>
           </div>

@@ -9,6 +9,7 @@ import LoginPage from "./pages/LoginPage/LoginPage";
 import Navbar from "./components/Navbar/Navbar";
 import IsPrivate from "./components/IsPrivate/IsPrivate";
 import IsAnon from "./components/IsAnon/IsAnon";
+import RecipeDetails from "./pages/RecipeDetails";
 
 function App() {
   return (
@@ -45,8 +46,8 @@ function App() {
                 
         />
          <Route path="/" element={<HomePage />} />
-         {/* <Route path="/recipe/:id" element={<RecipeDetails />} />
-          <Route path="/create" element={<CreateRecipe />} />
+         <Route path="/recipe/:id" element={<RecipeDetails />} />
+         {/* <Route path="/create" element={<CreateRecipe />} />
           <Route path="*" element={<NotFound />} /> */}
       </Routes>
     </div>
