@@ -1,15 +1,12 @@
 import React, { useEffect, useState } from "react";
 
-import { Link } from "react-router-dom";
 
 
-
-
-function HomePage() {
+function RecipePage() {
   const [recipes, setRecipes] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:5005/api/users")
+    fetch("http://localhost:5005/api/recipes")
       .then((response) => response.json())
       .then((data) => setRecipes(data))
       .catch((error) => console.error("Error fetching recipes:", error));
@@ -42,7 +39,7 @@ function HomePage() {
 }
 
 
-export default HomePage;
+export default RecipePage;
 
 
 

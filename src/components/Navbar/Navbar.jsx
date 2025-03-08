@@ -25,7 +25,7 @@ function Navbar() {
             <Link to="/" className="hover:text-gray-200">Home</Link>
           </li>
           <li>
-            <Link to="/create" className="hover:text-gray-200">Add Recipe</Link>
+            <Link to="/recipes" className="hover:text-gray-200">Add Recipe</Link>
           </li>
         </ul>
       </div>

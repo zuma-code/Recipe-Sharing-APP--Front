@@ -9,7 +9,7 @@ function RecipeDetails() {
     const [loading, setLoading] = useState(true);
     
     useEffect(() => {
-      fetch(`http://localhost:5005/recipes/${id}`)
+      fetch(`http://localhost:5005/api/recipes/${id}`)
         .then((response) => response.json())
         .then((data) => {
           setRecipe(data);
@@ -36,20 +36,21 @@ function RecipeDetails() {
           <h1 className="text-3xl font-bold">{recipe.title}</h1>
           <p className="text-lg">Cuisine: {recipe.cuisine}</p>
           <p className="text-lg">Dish Type: {recipe.dishType}</p>
+          <p className="text-lg">Level: {recipe.level}</p>
           <p className="text-lg">Duration: {recipe.duration} min</p>
           <p className="text-lg">Servings: {recipe.servings}</p>
           <h2 className="text-xl font-semibold mt-4">Ingredients</h2>
-       {/*    <ul className="list-disc pl-6">
+          <ul className="list-disc pl-6">
             {recipe.ingredients.map((ingredient, index) => (
               <li key={index}>{ingredient}</li>
             ))}
-          </ul> */}
+          </ul>
           <h2 className="text-xl font-semibold mt-4">Instructions</h2>
-         {/*  <ol className="list-decimal pl-6">
+          <ol className="list-decimal pl-6">
             {recipe.instructions.map((step, index) => (
               <li key={index}>{step}</li>
             ))}
-          </ol> */}
+          </ol>
           <div className="mt-6 flex gap-4">
             <button onClick={() => navigate(`/edit/${id}`)} className="btn btn-warning">Edit</button>
             <button onClick={handleDelete} className="btn btn-error">Delete</button>
