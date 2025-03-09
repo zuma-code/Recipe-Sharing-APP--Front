@@ -7,65 +7,53 @@ function Navbar() {
   // Subscribe to the AuthContext to gain access to
   // the values from AuthContext.Provider's `value` prop
   const { isLoggedIn, user, logOutUser } = useContext(AuthContext);
-
+  
   return (
     <nav>
-      <div className="navbar bg-primary text-white shadow-lg px-6">
+      <div className="navbar shadow-lg px-6" style={{ backgroundColor: "#E1AD01" }}>
         <div className="flex-1">
-          <Link to="/" className="text-2xl font-bold hover:text-gray-200">
+          <Link to="/" className="text-2xl font-bold text-white hover:opacity-80 transition duration-300">
             🍽️ Recipe Sharing
           </Link>
         </div>
-     {/* <Link to="/" className="hover:text-gray-200">Home</Link>*/}
-
-
-      <div className="flex">
-        <ul className="menu menu-horizontal px-1">
-          <li>
-            <Link to="/" className="hover:text-gray-200">Home</Link>
-          </li>
-          <li>
-            <Link to="/recipes" className="hover:text-gray-200">Add Recipe</Link>
-          </li>
-        </ul>
-      </div>
-
-
-
-
-      {isLoggedIn && (
-        <>
-          <button onClick={logOutUser}>Logout</button>
-
-          <Link to="/profile">
-            <button>Profile</button>
-            {/* <img src="https://picsum.photos/id/402/200/300" style={{ width: 50, height: 50, borderRadius: 25}} alt="profile" /> */}
-          </Link>
-
-          <span>{user && user.name}</span>
-        </>
-      )}
-
-      {!isLoggedIn && (
-        <>
-          <Link to="/signup"className="hover:text-gray-200">
-            {" "}
-            <button>Sign Up</button>{" "}
-          </Link>
-          <Link to="/login"className="hover:text-gray-200">
-            {" "}
-            <button>Login</button>{" "}
-          </Link>
+        
+        <div className="flex items-center">
+          <ul className="menu menu-horizontal px-1 mr-4">
+            <li>
+              <Link to="/" className="text-white font-medium hover:opacity-80 transition duration-300">Home</Link>
+            </li>
+          </ul>
           
-        </>
-        
-
-
-
-
-        
-      )}
+          {isLoggedIn ? (
+            <div className="flex items-center gap-4">
+              <span className="text-white font-medium">{user && user.name}</span>
+              
+              <Link to="/profile"  className="btn btn-sm bg-white text-yellow-700 border-none hover:bg-gray-200 transition duration-300">
+                  Profile
+              </Link>
+              
+              <button 
+                onClick={logOutUser} 
+                className="btn btn-sm bg-white text-yellow-700 border-none hover:bg-gray-200 transition duration-300"
+              >
+                Logout
+              </button>
+            </div>
+          ) : (
+            <div className="flex items-center gap-6">
+              <Link to="/login"
+                className="text-white font-medium hover:opacity-80 transition duration-300">
+                  Login
+              </Link>
+              
+              <Link to="/signup"  
+                className="text-white font-medium hover:opacity-80 transition duration-300">
+                  Sign Up
+              </Link>
+            </div>
+          )}
         </div>
+      </div>
     </nav>
   );
 }
