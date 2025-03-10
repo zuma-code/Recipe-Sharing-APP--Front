@@ -1,8 +1,11 @@
-import React, { useState} from "react";
+import React, { useState, useContext} from "react";
 import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../context/auth.context";
 
 function CreateRecipe()  {
   const navigate = useNavigate();
+  const { user } = useContext(AuthContext); // Get the logged-in user
+console.log(user);
   const [formData, setFormData] = useState({
     title: "",
     image: "",
@@ -25,19 +28,51 @@ function CreateRecipe()  {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    
+    if (!user) {
+      alert("You must be logged in to create a recipe.");
+      return;
+    }
+
+    const token = localStorage.getItem("token"); // Get token for authentication
+   
+    const requestBody = {
+      ...formData,
+      ingredients: formData.ingredients.split("\n"),
+      instructions: formData.instructions.split("\n").map((step) => step.trim()),
+     author: user._id, // Include the user ID in the request
+    };
+    
+    console.log("Sending data:", requestBody);
+    
     fetch("http://localhost:5005/api/recipes", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        ...formData,
-        ingredients: formData.ingredients.split("\n"), // Split by line
-        instructions: formData.instructions.split("\n").map((step) => step.trim()), // Trim whitespace
-      }),
+      headers: { 
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`, // Send token for authentication
+      
+      },
+      body: JSON.stringify(requestBody),
     })
-      .then(() => navigate("/"))
-      .catch((error) => console.error("Error creating recipe:", error));
+      .then(response => {
+        if (!response.ok) {
+          return response.text().then(text => {
+            console.error("Error response:", text);
+            throw new Error("Server responded with an error");
+          });
+        }
+        return response.json();
+      })
+      .then(data => {
+        console.log("Success:", data);
+        navigate("/");
+      })
+      .catch(error => {
+        console.error("Error creating recipe:", error.message);
+        // Show an error message to the user
+      });
   };
-
+  
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-3xl font-bold text-center mb-6">Create a New Recipe</h1>

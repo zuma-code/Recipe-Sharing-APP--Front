@@ -25,7 +25,7 @@ const HomePage = () => {
 
   const filteredRecipes = recipes.filter(
     (recipe) =>
-      recipe.title.toLowerCase().includes(search.toLowerCase()) &&
+      (recipe.title?.toLowerCase() || "").includes(search.toLowerCase()) &&
       (filter === "" || recipe.dishType === filter)
   );
 

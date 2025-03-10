@@ -16,55 +16,131 @@ function ProfilePage() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  // Make sure we have the base URL for API requests
+  const API_URL = process.env.REACT_APP_SERVER_URL || "";
+
+  // Helper function to get auth token and config
+  const getAuthConfig = () => {
+    const token = localStorage.getItem('authToken') || (user && user.token);
+    if (!token) {
+      throw new Error("Authentication token not found");
+    }
+    return {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    };
+  };
+
   useEffect(() => {
+    // Clear any previous errors
+    setError(null);
+    
     const fetchUserData = async () => {
+      if (!user || !user._id) {
+        setIsLoading(false);
+        return;
+      }
+      
       try {
         setIsLoading(true);
-        const profileResponse = await axios.get(`/api/users/${user._id}`);
-        const recipesResponse = await axios.get(`/api/recipes/user/${user._id}`);
+        
+      ;
+        
+        // Make API requests with full URLs and proper error handling
+        const token = localStorage.getItem("token");
+
+        const config = {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        };
+        
+        const [profileResponse, recipesResponse] = await Promise.all([
+          axios.get(`${API_URL}/user/${user._id}`, config),
+          axios.get(`${API_URL}/api/recipes/user/${user._id}`, config),
+        ]);
+        
+        // Validate responses
+        if (!profileResponse.data) {
+          throw new Error("Profile data not found");
+        }
         
         setProfile(profileResponse.data);
-        setUserRecipes(recipesResponse.data);
+        setUserRecipes(Array.isArray(recipesResponse.data) ? recipesResponse.data : []);
         
-        // Initialize form data with current profile info
-        setFormData({
-          name: profileResponse.data.name,
-          bio: profileResponse.data.bio || "",
-          favoriteFood: profileResponse.data.favoriteFood || "",
-          avatarUrl: profileResponse.data.avatarUrl || ""
-        });
-        
-        setIsLoading(false);
       } catch (err) {
         console.error("Error fetching user data:", err);
-        setError("Failed to load profile data. Please try again later.");
+        setError(
+          err.response?.data?.message || 
+          err.message || 
+          "Failed to load profile data. Please try again later."
+        );
+        setProfile(null);
+        setUserRecipes([]);
+      } finally {
         setIsLoading(false);
       }
     };
 
-    if (user) {
-      fetchUserData();
-    }
-  }, [user]);
+    fetchUserData();
+  }, [user, API_URL]);
 
+  // Initialize form data when profile changes
+  useEffect(() => {
+    if (profile) {
+      setFormData({ 
+        name: profile.name || "",
+        bio: profile.bio || "",
+        favoriteFood: profile.favoriteFood || "",
+        avatarUrl: profile.avatarUrl || ""
+      });
+    }
+  }, [profile]);
+  
   const handleChange = (e) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value
     });
   };
-
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError(null);
+    
     try {
       setIsLoading(true);
-      const response = await axios.put(`/api/users/${user._id}`, formData);
+      
+      if (!user || !user._id) {
+        throw new Error("User information not available");
+      }
+      
+      // Get auth config
+      const config = getAuthConfig();
+      
+      // Make the update request
+      const response = await axios.put(
+        `${API_URL}/api/users/${user._id}`, 
+        formData, 
+        config
+      );
+      
+      if (!response.data) {
+        throw new Error("Failed to update profile");
+      }
+      
       setProfile(response.data);
       setIsEditing(false);
-      setIsLoading(false);
     } catch (err) {
       console.error("Error updating profile:", err);
-      setError("Failed to update profile. Please try again.");
+      setError(
+        err.response?.data?.message || 
+        err.message || 
+        "Failed to update profile. Please try again."
+      );
+    } finally {
       setIsLoading(false);
     }
   };
@@ -206,7 +282,7 @@ function ProfilePage() {
                   <div className="stat">
                     <div className="stat-title">Member Since</div>
                     <div className="stat-value text-secondary text-lg">
-                      {new Date(profile?.createdAt).toLocaleDateString()}
+                      {profile?.createdAt ? new Date(profile.createdAt).toLocaleDateString() : 'N/A'}
                     </div>
                   </div>
                   
