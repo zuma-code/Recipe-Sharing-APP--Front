@@ -48,7 +48,7 @@ function ProfilePage() {
       ;
         
         // Make API requests with full URLs and proper error handling
-        const token = localStorage.getItem("token");
+        const token = localStorage.getItem("authToken");
 
         const config = {
           headers: {
@@ -59,7 +59,7 @@ function ProfilePage() {
         
         const [profileResponse, recipesResponse] = await Promise.all([
           axios.get(`${API_URL}/user/${user._id}`, config),
-          axios.get(`${API_URL}/api/recipes/user/${user._id}`, config),
+          axios.get(`${API_URL}/api/recipes/author/${user._id}`, config),   
         ]);
         
         // Validate responses
@@ -122,7 +122,7 @@ function ProfilePage() {
       
       // Make the update request
       const response = await axios.put(
-        `${API_URL}/api/users/${user._id}`, 
+        `${API_URL}/user/${user._id}`, 
         formData, 
         config
       );
@@ -312,7 +312,7 @@ function ProfilePage() {
       <div className="mb-8">
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-2xl font-bold">My Recipes</h2>
-          <a href="/recipes/new" className="btn btn-primary btn-sm">
+          <a href="/recipes" className="btn btn-primary btn-sm">
             Add New Recipe
           </a>
         </div>
@@ -330,7 +330,7 @@ function ProfilePage() {
               <div className="card bg-base-100 shadow-xl" key={recipe._id}>
                 <figure>
                   <img 
-                    src={recipe.imageUrl || "https://daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg"} 
+                    src={recipe.image} 
                     alt={recipe.title} 
                     className="h-48 w-full object-cover"
                   />
@@ -343,7 +343,7 @@ function ProfilePage() {
                   <p className="line-clamp-2">{recipe.description}</p>
                   <div className="flex items-center gap-2 mt-2">
                     <div className="badge badge-outline">{recipe.cuisine}</div>
-                    <div className="badge badge-outline">{recipe.cookingTime} mins</div>
+                    <div className="badge badge-outline">{recipe.duration} mins</div>
                   </div>
                   <div className="card-actions justify-end mt-4">
                     <a href={`/recipes/${recipe._id}`} className="btn btn-sm">View</a>
