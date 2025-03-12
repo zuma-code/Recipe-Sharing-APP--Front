@@ -1,6 +1,7 @@
 import { useState, useEffect, useContext } from "react";
 import { AuthContext } from "../context/auth.context";
 import axios from "axios";
+import { Link } from 'react-router-dom';
 
 function ProfilePage() {
   const { user } = useContext(AuthContext);
@@ -345,9 +346,10 @@ function ProfilePage() {
                     <div className="badge badge-outline">{recipe.cuisine}</div>
                     <div className="badge badge-outline">{recipe.duration} mins</div>
                   </div>
+             
+                
                   <div className="card-actions justify-end mt-4">
-                    <a href={`/recipes/${recipe._id}`} className="btn btn-sm">View</a>
-                    <a href={`/recipes/${recipe._id}/edit`} className="btn btn-sm btn-primary">Edit</a>
+                    <Link to="/recipe/:id"className="btn btn-sm btn-primary">Edit</Link>        
                   </div>
                 </div>
               </div>

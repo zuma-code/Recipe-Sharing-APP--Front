@@ -14,7 +14,7 @@ const EditRecipe = () => {
     image: "",
     cuisine: "",
     dishType: "",    
-    level: "",
+    level:"",
     duration: "",
     servings: "",
     ingredients: "",
@@ -25,23 +25,39 @@ const EditRecipe = () => {
     const fetchRecipe = async () => {
       try {
         setIsLoading(true);
-        // Replace with your actual API endpoint
-        const response = await fetch(`/api/recipes/${id}`);
+        setError(null);
+  
+        const response = await fetch(`/recipes/${id}`);
+  
         if (!response.ok) {
-          throw new Error('Failed to fetch recipe for editing');
+          throw new Error(`Failed to fetch recipe (Status: ${response.status})`);
         }
-        const data = await response.json();
+  
+        // Ensure the response is valid JSON
+        const text = await response.text();  // Read response as text first
+        if (!text.trim()) {
+          throw new Error("Empty response from server.");
+        }
+  
+        // Attempt to parse JSON safely
+        let data;
+        try {
+          data = JSON.parse(text);
+        } catch (jsonError) {
+          throw new Error("Invalid JSON format received from server.");
+        }
+  
         setFormData(data);
-        setIsLoading(false);
       } catch (err) {
         setError(err.message);
+      } finally {
         setIsLoading(false);
       }
     };
-
+  
     fetchRecipe();
   }, [id]);
-
+  
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     setFormData({
@@ -53,8 +69,8 @@ const EditRecipe = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    if (!formData.title) {
-      setError('Title is required');
+    if (!formData.title || !formData.description) {
+      setError('Title and description are required');
       return;
     }
     
@@ -127,22 +143,6 @@ const EditRecipe = () => {
 
             <div className="form-control w-full">
               <label className="label">
-                <span className="label-text">Image URL</span>
-              </label>
-              <input
-                type="text"
-                name="image"
-                value={formData.image}
-                onChange={handleChange}
-                placeholder="URL to recipe image"
-                className="input input-bordered w-full"
-              />
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
-            <div className="form-control w-full">
-              <label className="label">
                 <span className="label-text">Cuisine</span>
               </label>
               <input
@@ -154,40 +154,9 @@ const EditRecipe = () => {
                 className="input input-bordered w-full"
               />
             </div>
-
-            <div className="form-control w-full">
-              <label className="label">
-                <span className="label-text">Dish Type</span>
-              </label>
-              <input
-                type="text"
-                name="dishType"
-                value={formData.dishType}
-                onChange={handleChange}
-                placeholder="E.g., Main, Dessert, Appetizer"
-                className="input input-bordered w-full"
-              />
-            </div>
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-4">
-            <div className="form-control w-full">
-              <label className="label">
-                <span className="label-text">Difficulty Level</span>
-              </label>
-              <select
-                name="level"
-                value={formData.level}
-                onChange={handleChange}
-                className="select select-bordered w-full"
-              >
-                <option value="">Select difficulty</option>
-                <option value="Easy">Easy</option>
-                <option value="Medium">Medium</option>
-                <option value="Hard">Hard</option>
-              </select>
-            </div>
-            
             <div className="form-control w-full">
               <label className="label">
                 <span className="label-text">Duration (minutes)</span>
@@ -202,47 +171,45 @@ const EditRecipe = () => {
                 min="1"
               />
             </div>
-            
-            <div className="form-control w-full">
-              <label className="label">
-                <span className="label-text">Servings</span>
+
+            <div className="form-control">
+              <label className="label cursor-pointer">
+                <span className="label-text">Vegetarian</span>
+                <input
+                  type="checkbox"
+                  name="isVegetarian"
+                  checked={formData.isVegetarian}
+                  onChange={handleChange}
+                  className="checkbox checkbox-primary"
+                />
               </label>
-              <input
-                type="number"
-                name="servings"
-                value={formData.servings}
-                onChange={handleChange}
-                placeholder="Number of servings"
-                className="input input-bordered w-full"
-                min="1"
-              />
             </div>
           </div>
 
           <div className="form-control w-full mt-4">
             <label className="label">
-              <span className="label-text">Ingredients*</span>
+              <span className="label-text">Image URL</span>
             </label>
-            <textarea
-              name="ingredients"
-              value={formData.ingredients}
+            <input
+              type="text"
+              name="image"
+              value={formData.image}
               onChange={handleChange}
-              placeholder="Enter ingredients (one per line or comma separated)"
-              className="textarea textarea-bordered h-24"
-              required
-            ></textarea>
+              placeholder="URL to recipe image"
+              className="input input-bordered w-full"
+            />
           </div>
 
           <div className="form-control w-full mt-4">
             <label className="label">
-              <span className="label-text">Instructions*</span>
+              <span className="label-text">Description*</span>
             </label>
             <textarea
-              name="instructions"
-              value={formData.instructions}
+              name="description"
+              value={formData.description}
               onChange={handleChange}
-              placeholder="Enter cooking instructions step by step"
-              className="textarea textarea-bordered h-32"
+              placeholder="Brief description of the recipe"
+              className="textarea textarea-bordered h-24"
               required
             ></textarea>
           </div>
@@ -263,7 +230,6 @@ const EditRecipe = () => {
                 'Update Recipe'
               )}
             </button>
-            
           </div>
         </form>
       </div>
