@@ -21,6 +21,7 @@ import NotFound from "./pages/NotFoundPage/NotFoundPage";
 import EditRecipe from "./pages/EditRecipePage";
 import AdminDashboard from "./pages/AdminDashboard";
 
+
 function App() {
   return (
     <AuthProviderWrapper>
@@ -76,7 +77,7 @@ function AppRoutes() {
 
       {/* Admin Protected Route */}
       <Route
-        path="/admin"
+        path="/adminDashboard"
         element={isLoggedIn && user?.role === "admin" ? <AdminDashboard /> : <Navigate to="/" />}
       />
 

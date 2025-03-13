@@ -45,7 +45,7 @@ console.log(user);
     
     console.log("Sending data:", requestBody);
     
-    fetch("http://localhost:5005/api/recipes", {
+    fetch("http://localhost:5005/recipes/recipes", {
       method: "POST",
       headers: { 
         "Content-Type": "application/json",

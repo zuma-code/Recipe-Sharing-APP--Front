@@ -10,7 +10,7 @@ const HomePage = () => {
   useEffect(() => {
     const fetchRecipes = async () => {
       try {
-        const response = await fetch("http://localhost:5005/api/recipes");
+        const response = await fetch("http://localhost:5005/recipes/recipes");
         if (!response.ok) throw new Error("Failed to fetch recipes");
 
         const data = await response.json();
@@ -45,7 +45,7 @@ const HomePage = () => {
             <p className="mt-4 text-lg drop-shadow-sm">
               Find inspiration for your next meal and share your own delicious recipes!
             </p>
-            <Link to="/recipes" className="btn btn-secondary
+            <Link to="/recipes/create" className="btn btn-secondary
              btn-wide mt-2 shadow-lg">
               Share a Recipe
             </Link>
