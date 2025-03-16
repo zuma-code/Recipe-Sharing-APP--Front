@@ -6,7 +6,6 @@ import { Link } from 'react-router-dom';
 function ProfilePage() {
   const { user } = useContext(AuthContext);
   const [profile, setProfile] = useState(null);
-  const [userRecipes, setUserRecipes] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
@@ -19,7 +18,7 @@ function ProfilePage() {
 
   // Make sure we have the base URL for API requests
   const API_URL = process.env.REACT_APP_SERVER_URL || "";
-
+  console.log("API_URL:", API_URL);
   // Helper function to get auth token and config
   const getAuthConfig = () => {
     const token = localStorage.getItem('authToken') || (user && user.token);
@@ -33,6 +32,7 @@ function ProfilePage() {
     };
   };
 
+  console.log("Fetching profile for user:", user._id);
   useEffect(() => {
     // Clear any previous errors
     setError(null);
@@ -46,8 +46,6 @@ function ProfilePage() {
       try {
         setIsLoading(true);
         
-      ;
-        
         // Make API requests with full URLs and proper error handling
         const token = localStorage.getItem("authToken");
 
@@ -58,10 +56,7 @@ function ProfilePage() {
           },
         };
         
-        const [profileResponse, recipesResponse] = await Promise.all([
-          axios.get(`${API_URL}/user/${user._id}`, config),
-          axios.get(`${API_URL}/api/recipes/author/${user._id}`, config),   
-        ]);
+        const profileResponse = await axios.get(`${API_URL}/user/user/${user._id}`, config);
         
         // Validate responses
         if (!profileResponse.data) {
@@ -69,7 +64,6 @@ function ProfilePage() {
         }
         
         setProfile(profileResponse.data);
-        setUserRecipes(Array.isArray(recipesResponse.data) ? recipesResponse.data : []);
         
       } catch (err) {
         console.error("Error fetching user data:", err);
@@ -79,7 +73,6 @@ function ProfilePage() {
           "Failed to load profile data. Please try again later."
         );
         setProfile(null);
-        setUserRecipes([]);
       } finally {
         setIsLoading(false);
       }
@@ -276,11 +269,6 @@ function ProfilePage() {
                 
                 <div className="stats bg-base-200 shadow mb-6">
                   <div className="stat">
-                    <div className="stat-title">Recipes</div>
-                    <div className="stat-value text-primary">{userRecipes.length}</div>
-                  </div>
-                  
-                  <div className="stat">
                     <div className="stat-title">Member Since</div>
                     <div className="stat-value text-secondary text-lg">
                       {profile?.createdAt ? new Date(profile.createdAt).toLocaleDateString() : 'N/A'}
@@ -307,55 +295,6 @@ function ProfilePage() {
             </div>
           )}
         </div>
-      </div>
-
-      {/* User's Recipes */}
-      <div className="mb-8">
-        <div className="flex justify-between items-center mb-6">
-          <h2 className="text-2xl font-bold">My Recipes</h2>
-          <a href="/recipes" className="btn btn-primary btn-sm">
-            Add New Recipe
-          </a>
-        </div>
-        
-        {userRecipes.length === 0 ? (
-          <div className="alert">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" className="stroke-info shrink-0 w-6 h-6">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-            </svg>
-            <span>You haven't added any recipes yet. Click "Add New Recipe" to get started!</span>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {userRecipes.map((recipe) => (
-              <div className="card bg-base-100 shadow-xl" key={recipe._id}>
-                <figure>
-                  <img 
-                    src={recipe.image} 
-                    alt={recipe.title} 
-                    className="h-48 w-full object-cover"
-                  />
-                </figure>
-                <div className="card-body">
-                  <h2 className="card-title">
-                    {recipe.title}
-                    {recipe.isVegetarian && <div className="badge badge-secondary">Vegetarian</div>}
-                  </h2>
-                  <p className="line-clamp-2">{recipe.description}</p>
-                  <div className="flex items-center gap-2 mt-2">
-                    <div className="badge badge-outline">{recipe.cuisine}</div>
-                    <div className="badge badge-outline">{recipe.duration} mins</div>
-                  </div>
-             
-                
-                  <div className="card-actions justify-end mt-4">
-                    <Link to="/recipe/:id"className="btn btn-sm btn-primary">Edit</Link>        
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
       </div>
       
       {/* Activity Feed */}

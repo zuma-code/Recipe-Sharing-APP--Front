@@ -10,7 +10,7 @@ const HomePage = () => {
   useEffect(() => {
     const fetchRecipes = async () => {
       try {
-        const response = await fetch("http://localhost:5005/recipes/recipes");
+        const response = await fetch("http://localhost:5005/recipe/recipes");
         if (!response.ok) throw new Error("Failed to fetch recipes");
 
         const data = await response.json();

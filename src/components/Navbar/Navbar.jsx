@@ -21,11 +21,7 @@ function Navbar() {
         </div>
 
         <div className="flex items-center">
-          <ul className="menu menu-horizontal px-1 mr-4">
-            <li>
-              <Link to="/" className="text-white font-medium hover:opacity-80 transition duration-300">Home</Link>
-            </li>
-          </ul>
+         
 
           {isLoggedIn ? (
             <div className="flex items-center gap-4">
