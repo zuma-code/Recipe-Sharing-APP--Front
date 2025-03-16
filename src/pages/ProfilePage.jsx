@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext } from "react";
 import { AuthContext } from "../context/auth.context";
 import axios from "axios";
-import { Link } from 'react-router-dom';
+
 
 function ProfilePage() {
   const { user } = useContext(AuthContext);
@@ -116,7 +116,7 @@ function ProfilePage() {
       
       // Make the update request
       const response = await axios.put(
-        `${API_URL}/user/${user._id}`, 
+        `${API_URL}/user/user/${user._id}`, 
         formData, 
         config
       );
