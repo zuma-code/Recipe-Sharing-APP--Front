@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from "react";
-import { AuthContext } from "../context/auth.context";
+import { AuthContext } from "../../context/auth.context";
 import { Link } from "react-router-dom";
 import axios from "axios";
 
@@ -287,7 +287,7 @@ function ProfilePage() {
                 
                 <div className="card-actions justify-end space-x-2">
                   <Link 
-                    to="/recipe/:id/edit" 
+                    to={`/recipe/recipes/${user._id}`}
                     className="btn btn-secondary"
                   >
                     Edit My Recipes

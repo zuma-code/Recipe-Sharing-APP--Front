@@ -6,7 +6,7 @@ import { AuthContext } from "./context/auth.context";
 
 import { AuthProviderWrapper } from "./context/auth.context";
 import HomePage from "./pages/HomePage";
-import ProfilePage from "./pages/ProfilePage";
+import ProfilePage from "./pages/User/ProfilePage";
 import SignupPage from "./pages/SignupPage/SignupPage";
 import LoginPage from "./pages/LoginPage/LoginPage";
 
@@ -16,13 +16,13 @@ import Footer from "./components/Footer";
 import IsPrivate from "./components/IsPrivate/IsPrivate";
 import IsAnon from "./components/IsAnon/IsAnon";
 import RecipeDetails from "./pages/RecipeDetails";
-import CreateRecipe from "./pages/CreateRecipe";
+import CreateRecipe from "./pages/User/CreateRecipe";
 import NotFound from "./pages/NotFoundPage/NotFoundPage";
-import EditRecipe from "./pages/EditRecipePage";
+// import EditRecipe from "./pages/User/EditRecipePage";
 import AdminDashboard from "./pages/Admin/AdminDashboard";
-import ManageUsersPage from "./pages/Admin/ManageUsersPage";
-import ManageRecipesPage from "./pages/Admin/ManageRecipesPage";
-import ManageCommentsPage from "./pages/Admin/ManageCommentsPage";
+import ManageUsers from "./pages/Admin/ManageUsersPage";
+import ManageRecipes from "./pages/Admin/ManageRecipesPage";
+import RecipeList from "./pages/User/RecipeListPage";
 
 
 function App() {
@@ -74,10 +74,10 @@ function AppRoutes() {
           </IsAnon>
         }
       />
-
+      <Route path="/recipe/recipes/:userId" element={<RecipeList />} />
       <Route path="/recipes/:recipeId" element={<RecipeDetails />} />
       <Route path="/recipes/create" element={<CreateRecipe />} />
-      <Route path="/recipe/:id/edit" element={<EditRecipe />} />
+      {/* <Route path="/recipe/:id/edit" element={<EditRecipe />} /> */}
 
       {/* Admin Protected Route */}
       <Route
@@ -86,16 +86,13 @@ function AppRoutes() {
       />
       <Route
         path="/admin/users"
-        element={isLoggedIn && user?.role === "admin" ? <ManageUsersPage /> : <Navigate to="/" />}
+        element={isLoggedIn && user?.role === "admin" ? <ManageUsers /> : <Navigate to="/" />}
       />
       <Route
         path="/admin/recipes"
-        element={isLoggedIn && user?.role === "admin" ? <ManageRecipesPage /> : <Navigate to="/" />}
+        element={isLoggedIn && user?.role === "admin" ? <ManageRecipes /> : <Navigate to="/" />}
       />
-      {/* <Route
-        path="/admin/comments"
-        element={isLoggedIn && user?.role === "admin" ? <ManageCommentsPage /> : <Navigate to="/" />}
-      /> */}
+   
 
       <Route path="*" element={<NotFound />} />
     </Routes>
