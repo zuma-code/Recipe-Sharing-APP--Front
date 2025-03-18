@@ -92,10 +92,10 @@ function AppRoutes() {
         path="/admin/recipes"
         element={isLoggedIn && user?.role === "admin" ? <ManageRecipesPage /> : <Navigate to="/" />}
       />
-      <Route
+      {/* <Route
         path="/admin/comments"
         element={isLoggedIn && user?.role === "admin" ? <ManageCommentsPage /> : <Navigate to="/" />}
-      />
+      /> */}
 
       <Route path="*" element={<NotFound />} />
     </Routes>

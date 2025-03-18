@@ -14,7 +14,7 @@ function AdminDashboard() {
           <div className="flex gap-4">
             <Link to="/admin/users" className="btn btn-info">Manage Users</Link>
             <Link to="/admin/recipes" className="btn btn-info">Manage Recipes</Link>
-            <Link to="/admin/comments" className="btn btn-info">Manage Comments</Link>
+            {/* <Link to="/admin/comments" className="btn btn-info">Manage Comments</Link> */}
           </div>
         </div>
       ) : (
