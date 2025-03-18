@@ -19,6 +19,7 @@ function ProfilePage() {
   // Make sure we have the base URL for API requests
   const API_URL = process.env.REACT_APP_SERVER_URL || "";
   console.log("API_URL:", API_URL);
+  
   // Helper function to get auth token and config
   const getAuthConfig = () => {
     const token = localStorage.getItem('authToken') || (user && user.token);

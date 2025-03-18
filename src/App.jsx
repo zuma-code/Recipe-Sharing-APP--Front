@@ -43,6 +43,7 @@ function AppRoutes() {
 
   return (
     <Routes>
+       {/* Public Route: Home */}
       <Route path="/" element={<HomePage />} />
 
       <Route
@@ -71,7 +72,7 @@ function AppRoutes() {
         }
       />
 
-      <Route path="/recipe/:id" element={<RecipeDetails />} />
+      <Route path="/recipes/:recipeId" element={<RecipeDetails />} />
       <Route path="/recipes/create" element={<CreateRecipe />} />
       <Route path="/recipe/:id/edit" element={<EditRecipe />} />
 

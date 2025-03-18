@@ -1,5 +1,9 @@
+import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
+
+
+const apiUrl = process.env.REACT_APP_SERVER_URL || "http://localhost:5005";
 
 const EditRecipe = () => {
   const { id } = useParams();
@@ -21,83 +25,61 @@ const EditRecipe = () => {
     instructions: "",
   });
 
-  useEffect(() => {
-    const fetchRecipe = async () => {
-      try {
-        setIsLoading(true);
-        setError(null);
-  
-        const response = await fetch(`/recipes/${id}`);
-  
-        if (!response.ok) {
-          throw new Error(`Failed to fetch recipe (Status: ${response.status})`);
-        }
-  
-        // Ensure the response is valid JSON
-        const text = await response.text();  // Read response as text first
-        if (!text.trim()) {
-          throw new Error("Empty response from server.");
-        }
-  
-        // Attempt to parse JSON safely
-        let data;
-        try {
-          data = JSON.parse(text);
-        } catch (jsonError) {
-          throw new Error("Invalid JSON format received from server.");
-        }
-  
-        setFormData(data);
-      } catch (err) {
-        setError(err.message);
-      } finally {
+
+   const fetchRecipe = () => {
+      setIsLoading(true);
+      setError(null);
+
+       
+      axios.get(`${apiUrl}/recipe/recipes/${id}`)
+      .then(response => {
+        setFormData(response.data);
+      })
+      .catch(err => {
+        console.error("Error fetching recipe:", err.message);
+        setError("Failed to load recipe. Please try again later.");
+      })
+      .finally(() => {
         setIsLoading(false);
-      }
-    };
-  
+      });
+  };
+    
+      
+
+  useEffect(() => {    
     fetchRecipe();
   }, [id]);
   
-  const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    setFormData({
-      ...formData,
-      [name]: type === 'checkbox' ? checked : value
-    });
-  };
+// Handle input change
+const handleChange = (e) => {
+  const { name, value, type, checked } = e.target;
+  setFormData((prevData) => ({
+    ...prevData,
+    [name]: type === "checkbox" ? checked : type === "number" ? Number(value) : value,
+  }));
+};
 
-  const handleSubmit = async (e) => {
+  const handleSubmit =  (e) => {
     e.preventDefault();
     
-    if (!formData.title || !formData.description) {
-      setError('Title and description are required');
-      return;
-    }
+    setIsSaving(true);
+    setError(null);
     
-    try {
-      setIsSaving(true);
-      setError(null);
-      
-      const response = await fetch(`/api/recipes/${id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
+    axios.put(`${apiUrl}/recipe/recipes/${id}`, formData)
+      .then(() => {
+        // Navigate back to the recipes list or details page on success
+        navigate('/');
+      })
+      .catch(err => {
+        setError(err.message || 'Failed to update recipe');
+      })
+      .finally(() => {
+        setIsSaving(false);
       });
-      
-      if (!response.ok) {
-        throw new Error('Failed to update recipe');
-      }
-      
-      // Navigate back to the recipes list or details page on success
-      navigate('/');
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setIsSaving(false);
-    }
   };
+    
+  
+      
 
   if (isLoading) {
     return (

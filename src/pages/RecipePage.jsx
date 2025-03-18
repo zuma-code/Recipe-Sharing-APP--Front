@@ -6,7 +6,7 @@ function RecipePage() {
   const [recipes, setRecipes] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:5005/recipes/recipes")
+    fetch("http://localhost:5005/recipe/recipes")
       .then((response) => response.json())
       .then((data) => setRecipes(data))
       .catch((error) => console.error("Error fetching recipes:", error));
