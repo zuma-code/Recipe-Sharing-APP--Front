@@ -28,7 +28,7 @@ function Navbar() {
               <span className="text-white font-medium">{user && user.name}</span>
 
               {user && user.role === 'admin' && (
-                <Link to="/adminDashboard" className="btn btn-sm bg-white text-yellow-700 border-none hover:bg-gray-200 transition duration-300">
+                <Link to="/admin" className="btn btn-sm bg-white text-yellow-700 border-none hover:bg-gray-200 transition duration-300">
                   Admin Dashboard
                 </Link>
               )}

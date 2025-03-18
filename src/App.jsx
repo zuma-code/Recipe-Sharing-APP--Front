@@ -19,7 +19,10 @@ import RecipeDetails from "./pages/RecipeDetails";
 import CreateRecipe from "./pages/CreateRecipe";
 import NotFound from "./pages/NotFoundPage/NotFoundPage";
 import EditRecipe from "./pages/EditRecipePage";
-import AdminDashboard from "./pages/AdminDashboard";
+import AdminDashboard from "./pages/Admin/AdminDashboard";
+import ManageUsersPage from "./pages/Admin/ManageUsersPage";
+import ManageRecipesPage from "./pages/Admin/ManageRecipesPage";
+import ManageCommentsPage from "./pages/Admin/ManageCommentsPage";
 
 
 function App() {
@@ -78,8 +81,20 @@ function AppRoutes() {
 
       {/* Admin Protected Route */}
       <Route
-        path="/adminDashboard"
+        path="/admin"
         element={isLoggedIn && user?.role === "admin" ? <AdminDashboard /> : <Navigate to="/" />}
+      />
+      <Route
+        path="/admin/users"
+        element={isLoggedIn && user?.role === "admin" ? <ManageUsersPage /> : <Navigate to="/" />}
+      />
+      <Route
+        path="/admin/recipes"
+        element={isLoggedIn && user?.role === "admin" ? <ManageRecipesPage /> : <Navigate to="/" />}
+      />
+      <Route
+        path="/admin/comments"
+        element={isLoggedIn && user?.role === "admin" ? <ManageCommentsPage /> : <Navigate to="/" />}
       />
 
       <Route path="*" element={<NotFound />} />
