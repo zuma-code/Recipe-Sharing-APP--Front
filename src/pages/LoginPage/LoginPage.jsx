@@ -37,7 +37,7 @@ function LoginPage() {
       // Redirect based on role
       if (userResponse.data.role === "admin") {
         console.log("Redirecting to admin page"); // Log redirection
-        navigate("/adminDashboard");  // 🚀 Redirect admins to AdminPage
+        navigate("/admin");  // 🚀 Redirect admins to AdminPage
       } else {
         console.log("Redirecting to home page"); // Log redirection
         navigate("/");  // Redirect normal users to home

@@ -10,8 +10,12 @@ const RecipeListPage = () => {
   const { user } = useContext(AuthContext);
 
   useEffect(() => {
+    if (!user || !user._id) {
+      return; // Don't fetch recipes if user is not available
+    }
+    
     // Fetch the recipes for the user
-    fetch(`${API_URL}/recipe/recipes/${user._id}`)
+    fetch(`${API_URL}/recipe/recipes/byUser/${user._id}`)
       .then((response) => {
         if (!response.ok) {
           throw new Error("Failed to fetch recipes");
@@ -25,6 +29,19 @@ const RecipeListPage = () => {
         setError(err.message); // Set error message if fetch fails
       });
   }, [user._id, API_URL]);
+
+   // If no user is available, show a message
+   if (!user) {
+    return (
+      <div className="container mx-auto p-4">
+        <h1 className="text-3xl font-bold text-center mb-8">Your Recipes</h1>
+        <div className="alert alert-warning text-center mb-4">
+          <p>Please log in to view your recipes.</p>
+        </div>
+      </div>
+    );
+  }
+
 
   return (
     <div className="container mx-auto p-4">

@@ -4,10 +4,11 @@ import { AuthContext } from "../context/auth.context";
 import axios from "axios";
 
 const HomePage = () => {
+
   const [recipes, setRecipes] = useState([]);
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState("");
-  const [firstLetter, setFirstLetter] = useState("");
+  
 
   const [loading, setLoading] = useState(true); // Single loading state
   const [error, setError] = useState(null);
@@ -59,11 +60,10 @@ const HomePage = () => {
 
   const filteredRecipes = recipes.filter((recipe) => {
     const titleMatch = recipe.title?.toLowerCase().includes(search.toLowerCase().trim());
-    const firstLetterMatch =
-      firstLetter === "" || recipe.title?.trim().toLowerCase().startsWith(firstLetter.toLowerCase());
+    
     const dishTypeMatch = filter === "" || recipe.dishType?.toLowerCase() === filter.toLowerCase();
 
-    return titleMatch && firstLetterMatch && dishTypeMatch;
+    return titleMatch  && dishTypeMatch;
   });
 
 

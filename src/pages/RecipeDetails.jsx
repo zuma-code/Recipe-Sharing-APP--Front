@@ -22,7 +22,7 @@ function RecipeDetails() {
 
   useEffect(() => {
     axios
-    .get(`${API_URL}/recipe/recipes/${recipeId}`)
+    .get(`${API_URL}/recipe/recipes/byRecipe/${recipeId}`)
       .then(response => {
         setRecipe(response.data);
         setLoading(false);

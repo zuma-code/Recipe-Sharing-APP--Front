@@ -1,32 +1,24 @@
 import axios from 'axios';
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
-import { AuthContext } from "../../context/auth.context";
 
 const apiUrl = process.env.REACT_APP_SERVER_URL || "http://localhost:5005";
 
 const EditRecipe = () => {
-  const { user } = useContext(AuthContext);
-  const { id } = useParams();
+  const { id } = useParams(); // Get the recipe id from the URL
   const navigate = useNavigate();
 
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState(null);
+  const token = localStorage.getItem("authToken");
 
-  // Function to get auth token from localStorage or context
-  const getAuthConfig = () => {
-    const token = localStorage.getItem('authToken') || (user && user.token);
-    if (!token) {
-      throw new Error("Authentication token not found");
-    }
-    return {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    };
-  };
-
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+  }
   const [formData, setFormData] = useState({
     title: '',
     image: '',
@@ -45,9 +37,10 @@ const EditRecipe = () => {
     setError(null);
 
     axios
-      .get(`${apiUrl}/recipe/recipes/${id}`)
+      .get(`${apiUrl}/recipe/recipes/byRecipe/${id}`) // Use the id from URL
       .then((response) => {
-        setFormData(response.data);
+        setFormData(response.data); // Set the data from the API response
+   console.log(config)
       })
       .catch((err) => {
         console.error('Error fetching recipe:', err.message);
@@ -60,7 +53,7 @@ const EditRecipe = () => {
 
   useEffect(() => {
     fetchRecipe();
-  }, [id]);
+  }, [id]); // Dependency array to re-fetch if id changes
 
   // Handle input changes
   const handleChange = (e) => {
@@ -78,20 +71,19 @@ const EditRecipe = () => {
 
     try {
       setIsSaving(true);
-      const config = getAuthConfig();
 
       // Update the recipe on the server
       const response = await axios.put(
-        `${apiUrl}/recipe/recipes/${id}`,
-        formData,
-        config
+        `${apiUrl}/recipe/recipes/${id}`, // Use the id from URL
+        formData,config
       );
 
       if (!response.data) {
         throw new Error('Failed to update the recipe');
       }
-
-      navigate(`/recipes/${user._id}`); // Redirect after successful save
+      
+      const userId = response.data.author;
+      navigate(`/recipe/recipes/${userId}`); // Redirect after successful save (or a custom route)
     } catch (err) {
       console.error('Error updating recipe:', err);
       setError(
@@ -142,9 +134,142 @@ const EditRecipe = () => {
         )}
 
         <form onSubmit={handleSubmit} className="p-6">
-          {/* Form inputs (title, description, etc.) */}
-          {/* Similar to your existing code, with validation where necessary */}
-          
+          <div className="mb-4">
+            <label htmlFor="title" className="block text-lg font-medium">
+              Title
+            </label>
+            <input
+              type="text"
+              id="title"
+              name="title"
+              value={formData.title}
+              onChange={handleChange}
+              className="input input-bordered w-full"
+            />
+          </div>
+
+          <div className="mb-4">
+            <label htmlFor="image" className="block text-lg font-medium">
+              Image URL
+            </label>
+            <input
+              type="text"
+              id="image"
+              name="image"
+              value={formData.image}
+              onChange={handleChange}
+              className="input input-bordered w-full"
+            />
+          </div>
+
+          <div className="mb-4">
+            <label htmlFor="cuisine" className="block text-lg font-medium">
+              Cuisine
+            </label>
+            <input
+              type="text"
+              id="cuisine"
+              name="cuisine"
+              value={formData.cuisine}
+              onChange={handleChange}
+              className="input input-bordered w-full"
+            />
+          </div>
+          <div className="mb-4">
+            <label htmlFor="dishType" className="block text-lg font-medium">
+             DishType
+            </label>
+            <input
+              type="text"
+              id="dishType"
+              name="dishType"
+              value={formData.dishType}
+              onChange={handleChange}
+              className="input input-bordered w-full"
+            />
+          </div>
+
+          <div className="mb-4">
+            <label htmlFor="level" className="block text-lg font-medium">
+            Level
+            </label>
+            <input
+              type="text"
+              id="level"
+              name="level"
+              value={formData.level}
+              onChange={handleChange}
+              className="input input-bordered w-full"
+            />
+          </div>
+          <div className="mb-4">
+            <label htmlFor="duration" className="block text-lg font-medium">
+            Duration
+            </label>
+            <input
+              type="number"
+              id="duration"
+              name="duration"
+              value={formData.duration}
+              onChange={handleChange}
+              className="input input-bordered w-full"
+            />
+          </div>
+          <div className="mb-4">
+            <label htmlFor="servings" className="block text-lg font-medium">
+              Servings
+            </label>
+            <input
+              type="number"
+              id="servings"
+              name="servings"
+              value={formData.servings}
+              onChange={handleChange}
+              className="input input-bordered w-full"
+            />
+          </div>
+
+          <div className="mb-4">
+            <label htmlFor="ingredients" className="block text-lg font-medium">
+              Ingredients
+            </label>
+            <input
+              type="text"
+              id="ingredients"
+              name="ingredients"
+              value={formData.ingredients}
+              onChange={(e) => {
+                const value = e.target.value.split(','); // Split ingredients by commas
+                setFormData((prevData) => ({
+                  ...prevData,
+                  ingredients: value,
+                }));
+              }}
+              className="input input-bordered w-full"
+            />
+          </div>
+
+          <div className="mb-4">
+            <label htmlFor="instructions" className="block text-lg font-medium">
+              Instructions
+            </label>
+            <input
+              type="text"
+              id="instructions"
+              name="instructions"
+              value={formData.instructions}
+              onChange={(e) => {
+      const value = e.target.value.split(','); // Split instructions by commas
+      setFormData((prevData) => ({
+        ...prevData,
+        instructions: value,
+      }));
+    }}
+    className="input input-bordered w-full"
+  />
+</div>
+
+
           <div className="mt-8 flex justify-end gap-4">
             <Link to="/" className="btn">
               Cancel

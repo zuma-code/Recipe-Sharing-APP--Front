@@ -13,13 +13,19 @@ function ManageRecipesPage() {
 
   // Helper function to get auth token
   const getAuthToken = () => localStorage.getItem("authToken");
+  const API_URL = process.env.REACT_APP_SERVER_URL || "";
 
   // Fetch recipess from API with useCallback to avoid unnecessary re-renders
+  // Fetch recipes from API with useCallback to avoid unnecessary re-renders
   const fetchRecipes = useCallback(async () => {
+    if (!isLoggedIn || !user?._id || user.role !== "admin") {
+      return; // Don't fetch recipes if user is not logged in or doesn't have the right role
+    }
+    
     setIsLoading(true);
     try {
       const token = localStorage.getItem("authToken");
-      const res = await axios.get("http://localhost:5005/recipe/recipes", {
+      const res = await axios.get(`${API_URL}/recipe/recipes`, {
         headers: {
           Authorization: `Bearer ${token}`
         },
@@ -54,7 +60,7 @@ function ManageRecipesPage() {
     } finally {
       setIsLoading(false);
     }
-  }, [currentPage]);
+  }, [currentPage, isLoggedIn, user, API_URL]);
   
   useEffect(() => {
     if (isLoggedIn && user?.role === "admin") {
@@ -67,20 +73,22 @@ function ManageRecipesPage() {
   const deleteRecipe = useCallback(async (id) => {
     try {
       const token = getAuthToken();
-      await axios.delete(`http://localhost:5005/recipe/recipes/${id}`, {
+      await axios.delete(`${API_URL}/recipe/recipes/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-      setRecipes(recipes.filter((recipe) => recipe._id !== id)); // Optimistically update UI
+      setRecipes((prevRecipes) => prevRecipes.filter((recipe) => recipe._id !== id)); // Optimistically update UI
     } catch (error) {
       console.error("Error deleting recipe", error.message);
     }
-  }, [recipes]);
+  }, [API_URL]);
 
   // Change page
-  const changePage = (page) => {
+  const changePage = (page) => { 
+    if (page >= 1 && page <= totalPages) {
     setCurrentPage(page);
+    }
   };
 
   return (
@@ -101,9 +109,10 @@ function ManageRecipesPage() {
         <p className="text-gray-500">No recipes found.</p>
       ) : (
         <ul className="space-y-2">
+        {console.log(recipes)}
           {recipes.map((recipe) => (
             <li key={recipe._id} className="border-b py-2 flex justify-between">
-              <span>{recipe.title} ({recipe.author})</span>
+              <span>{recipe.title} {recipe.author.name}</span>
               <button
                 onClick={() => deleteRecipe(recipe._id)}
                 className="btn btn-error btn-sm"

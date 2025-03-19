@@ -18,7 +18,7 @@ import IsAnon from "./components/IsAnon/IsAnon";
 import RecipeDetails from "./pages/RecipeDetails";
 import CreateRecipe from "./pages/User/CreateRecipe";
 import NotFound from "./pages/NotFoundPage/NotFoundPage";
-// import EditRecipe from "./pages/User/EditRecipePage";
+import EditRecipe from "./pages/User/EditRecipePage";
 import AdminDashboard from "./pages/Admin/AdminDashboard";
 import ManageUsers from "./pages/Admin/ManageUsersPage";
 import ManageRecipes from "./pages/Admin/ManageRecipesPage";
@@ -77,7 +77,7 @@ function AppRoutes() {
       <Route path="/recipe/recipes/:userId" element={<RecipeList />} />
       <Route path="/recipes/:recipeId" element={<RecipeDetails />} />
       <Route path="/recipes/create" element={<CreateRecipe />} />
-      {/* <Route path="/recipe/:id/edit" element={<EditRecipe />} /> */}
+      <Route path="/recipes/edit/:id" element={<EditRecipe />} /> 
 
       {/* Admin Protected Route */}
       <Route
