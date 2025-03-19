@@ -70,7 +70,7 @@ function CreateRecipe() {
       return;
     }
 
-    const token = localStorage.getItem("token"); // Get token for authentication
+    const token = localStorage.getItem("authToken"); // Get token for authentication
 
     const requestBody = {
       ...formData,
