@@ -2,6 +2,7 @@ import { useEffect, useState, useContext, useCallback } from "react";
 import axios from "axios";
 import { AuthContext } from "../../context/auth.context";
 
+
 // Admin Dashboard for managing comments
 function ManageCommentsPage() {
   const { user, isLoggedIn } = useContext(AuthContext);
@@ -11,6 +12,7 @@ function ManageCommentsPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
+  const API_URL = process.env.REACT_APP_SERVER_URL;
   // Helper function to get auth token
   const getAuthToken = () => localStorage.getItem("authToken");
 
@@ -19,7 +21,7 @@ function ManageCommentsPage() {
     setIsLoading(true);
     try {
       const token = localStorage.getItem("authToken");
-      const res = await axios.get("http://localhost:5005/comment/comments", {
+      const res = await axios.get(`${API_URL}/comment/comments`, {
         headers: {
           Authorization: `Bearer ${token}`
         },
@@ -67,7 +69,7 @@ function ManageCommentsPage() {
   const deleteComment = useCallback(async (id) => {
     try {
       const token = getAuthToken();
-      await axios.delete(`http://localhost:5005/comment/comments/${id}`, {
+      await axios.delete(`${API_URL}/comment/comments/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

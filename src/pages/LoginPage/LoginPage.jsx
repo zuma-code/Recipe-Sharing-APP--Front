@@ -12,6 +12,8 @@ function LoginPage() {
   const navigate = useNavigate();
   const { storeToken, authenticateUser } = useContext(AuthContext);
 
+  const API_URL = process.env.REACT_APP_SERVER_URL;
+
   const handleEmail = (e) => setEmail(e.target.value);
   const handlePassword = (e) => setPassword(e.target.value);
 
@@ -28,7 +30,7 @@ function LoginPage() {
       authenticateUser();
 
       // Fetch user details
-      const userResponse = await axios.get("http://localhost:5005/auth/verify", {
+      const userResponse = await axios.get(`${API_URL}/auth/verify`, {
         headers: { Authorization: `Bearer ${response.data.authToken}` },
       });
 

@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
 
+const API_URL = process.env.REACT_APP_SERVER_URL; // Use environment variable for API URL
+
 
 
 function RecipePage() {
   const [recipes, setRecipes] = useState([]);
-
+  
   useEffect(() => {
-    fetch("http://localhost:5005/recipe/recipes")
+    fetch(`${API_URL}/recipe/recipes`)
       .then((response) => response.json())
       .then((data) => setRecipes(data))
       .catch((error) => console.error("Error fetching recipes:", error));

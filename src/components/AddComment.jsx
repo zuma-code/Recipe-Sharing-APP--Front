@@ -5,6 +5,10 @@ const AddComment = ({ recipeId, userId, onCommentAdded }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
+
+
+  const API_URL = process.env.REACT_APP_SERVER_URL; // Use environment variable for API URL
+
   const handleSubmit = async () => {
     if (!text.trim()) {
       setError("Comment cannot be empty.");
@@ -13,9 +17,11 @@ const AddComment = ({ recipeId, userId, onCommentAdded }) => {
 
     setLoading(true);
     setError(null);
-
+    
+    
+    
     try {
-      const response = await fetch("http://localhost:5005/api/comments", {
+      const response = await fetch(`${API_URL}/api/comments`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ user: userId, recipe: recipeId, text }),

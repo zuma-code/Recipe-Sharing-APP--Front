@@ -10,6 +10,7 @@ function ManageUsersPage() {
   const [totalPages, setTotalPages] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const API_URL = process.env.REACT_APP_SERVER_URL;
 
   // Helper function to get auth token
   const getAuthToken = () => localStorage.getItem("authToken");
@@ -19,7 +20,7 @@ function ManageUsersPage() {
     setIsLoading(true);
     try {
       const token = localStorage.getItem("authToken");
-      const res = await axios.get("http://localhost:5005/user/users", {
+      const res = await axios.get(`${API_URL}/user/users`, {
         headers: {
           Authorization: `Bearer ${token}`
         },
@@ -67,7 +68,7 @@ function ManageUsersPage() {
   const deleteUser = useCallback(async (id) => {
     try {
       const token = getAuthToken();
-      await axios.delete(`http://localhost:5005/user/user/${id}`, {
+      await axios.delete(`${API_URL}/user/user/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

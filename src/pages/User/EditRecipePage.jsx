@@ -2,7 +2,7 @@ import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 
-const apiUrl = process.env.REACT_APP_SERVER_URL || "http://localhost:5005";
+const apiUrl = process.env.REACT_APP_SERVER_URL;
 
 const EditRecipe = () => {
   const { id } = useParams(); // Get the recipe id from the URL

@@ -15,7 +15,7 @@ const HomePage = () => {
   const [showLoginAlert, setShowLoginAlert] = useState(false);
   const { isLoggedIn } = useContext(AuthContext);
 
-  const apiUrl = process.env.REACT_APP_SERVER_URL || "http://localhost:5005"; // Use environment variable for API URL
+  const apiUrl = process.env.REACT_APP_SERVER_URL; // Use environment variable for API URL
 
   const initialize = () => {
     setLoading(true); // Asegura que el estado de carga se active antes de la solicitud
