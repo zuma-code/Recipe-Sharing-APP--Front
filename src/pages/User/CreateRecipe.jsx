@@ -7,7 +7,7 @@ function CreateRecipe() {
   const { user } = useContext(AuthContext); // Get the logged-in user
   
   const API_URL = process.env.REACT_APP_SERVER_URL;
-  
+
   const [formData, setFormData] = useState({
     title: "",
     image: "",
@@ -85,7 +85,7 @@ function CreateRecipe() {
 
     setLoading(true);
     try {
-      const response = await fetch(`${API_URL}5/recipe/recipes`, { 
+      const response = await fetch(`${API_URL}/recipe/recipes`, { 
         method: "POST",
         headers: { 
           "Content-Type": "application/json",
