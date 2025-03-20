@@ -23,7 +23,7 @@ function LoginPage() {
     const requestBody = { email, password };
 
     // Add this line to see what's being sent
-    console.log("Attempting login with:", { email, password });
+    // console.log("Attempting login with:", { email, password });
     try {
       const response = await authService.login(requestBody);
       storeToken(response.data.authToken);
@@ -34,14 +34,14 @@ function LoginPage() {
         headers: { Authorization: `Bearer ${response.data.authToken}` },
       });
 
-      console.log("User details:", userResponse.data); // Log user details
+      // console.log("User details:", userResponse.data); // Log user details
 
       // Redirect based on role
       if (userResponse.data.role === "admin") {
-        console.log("Redirecting to admin page"); // Log redirection
+        // console.log("Redirecting to admin page"); // Log redirection
         navigate("/admin");  // 🚀 Redirect admins to AdminPage
       } else {
-        console.log("Redirecting to home page"); // Log redirection
+        // console.log("Redirecting to home page"); // Log redirection
         navigate("/");  // Redirect normal users to home
       }
     } catch (error) {

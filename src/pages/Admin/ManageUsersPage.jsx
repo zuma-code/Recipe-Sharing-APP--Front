@@ -30,7 +30,7 @@ function ManageUsersPage() {
         }
       });
       
-      console.log("API Response: ", res); // Log the response to check the data
+      // console.log("API Response: ", res); // Log the response to check the data
       // setUsers(res.data)
       // Ensure res.data.users exists and is an array
       if (res.data && Array.isArray(res.data)) {

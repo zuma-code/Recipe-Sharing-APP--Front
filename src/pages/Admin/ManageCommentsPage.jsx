@@ -31,7 +31,7 @@ function ManageCommentsPage() {
         }
       });
       
-      console.log("API Response: ", res); // Log the response to check the data
+      // console.log("API Response: ", res); // Log the response to check the data
       // setComments(res.data)
       // Ensure res.data exists and is an array
       if (res.data && Array.isArray(res.data)) {

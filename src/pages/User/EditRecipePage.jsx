@@ -40,7 +40,7 @@ const EditRecipe = () => {
       .get(`${apiUrl}/recipe/recipes/byRecipe/${id}`) // Use the id from URL
       .then((response) => {
         setFormData(response.data); // Set the data from the API response
-   console.log(config)
+  //  console.log(config)
       })
       .catch((err) => {
         console.error('Error fetching recipe:', err.message);

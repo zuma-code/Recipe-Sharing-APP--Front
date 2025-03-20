@@ -16,7 +16,7 @@ function RecipeDetails() {
 
    // Make sure we have the base URL for API requests
 
-  console.log("API_URL:", API_URL);
+  // console.log("API_URL:", API_URL);
 
   
 

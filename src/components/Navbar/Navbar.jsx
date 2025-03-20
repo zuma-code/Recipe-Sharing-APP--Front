@@ -8,8 +8,8 @@ function Navbar() {
   // the values from AuthContext.Provider's `value` prop
   const { isLoggedIn, user, logOutUser } = useContext(AuthContext);
 
-  console.log("isLoggedIn:", isLoggedIn);
-  console.log("user:", user);
+  // console.log("isLoggedIn:", isLoggedIn);
+  // console.log("user:", user);
 
   return (
     <nav>

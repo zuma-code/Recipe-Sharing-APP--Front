@@ -19,7 +19,7 @@ function ProfilePage() {
 
  
   const API_URL = process.env.REACT_APP_SERVER_URL || "";
-  console.log("API_URL:", API_URL);
+  // console.log("API_URL:", API_URL);
   
   // Helper function to get auth token and config
   const getAuthConfig = () => {
@@ -34,7 +34,7 @@ function ProfilePage() {
     };
   };
 
-  console.log("Fetching profile for user:", user._id);
+  // console.log("Fetching profile for user:", user._id);
   useEffect(() => {
     // Clear any previous errors
     setError(null);

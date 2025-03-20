@@ -81,7 +81,7 @@ function CreateRecipe() {
       author: { _id: user._id, name: user.name, email: user.email }, // Add author details
     };
 
-    console.log("Sending data:", requestBody);
+    // console.log("Sending data:", requestBody);
 
     setLoading(true);
     try {
@@ -96,7 +96,7 @@ function CreateRecipe() {
 
       if (!response.ok) {
         const errorText = await response.text();
-        console.log("Error Response:", errorText); // Log the error response
+        // console.log("Error Response:", errorText); // Log the error response
         throw new Error(`Server responded with an error: ${errorText}`);
       }
 
@@ -109,7 +109,7 @@ function CreateRecipe() {
         data = await response.text(); // Handle non-JSON responses if needed
       }
       
-      console.log("Success:", data);
+      // console.log("Success:", data);
       navigate(`/recipes/${data._id}`);
 
    

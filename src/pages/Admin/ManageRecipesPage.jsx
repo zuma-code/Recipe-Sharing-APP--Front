@@ -35,7 +35,7 @@ function ManageRecipesPage() {
         }
       });
       
-      console.log("API Response: ", res); // Log the response to check the data
+      // console.log("API Response: ", res); // Log the response to check the data
       // setUsers(res.data)
       // Ensure res.data exists and is an array
       if (res.data && Array.isArray(res.data)) {
@@ -109,7 +109,7 @@ function ManageRecipesPage() {
         <p className="text-gray-500">No recipes found.</p>
       ) : (
         <ul className="space-y-2">
-        {console.log(recipes)}
+        {/* {console.log(recipes)} */}
           {recipes.map((recipe) => (
             <li key={recipe._id} className="border-b py-2 flex justify-between">
               <span>{recipe.title} {recipe.author.name}</span>
