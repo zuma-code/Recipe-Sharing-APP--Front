@@ -23,6 +23,7 @@ import AdminDashboard from "./pages/Admin/AdminDashboard";
 import ManageUsers from "./pages/Admin/ManageUsersPage";
 import ManageRecipes from "./pages/Admin/ManageRecipesPage";
 import RecipeList from "./pages/User/RecipeListPage";
+import ChatN8N from "./components/ChatN8N";
 
 
 function App() {
@@ -34,6 +35,7 @@ function App() {
           <div className="container mx-auto p-4 flex-grow">
             <AppRoutes />
           </div>
+          <ChatN8N/>
           <Footer />
         </div>
       </div>
