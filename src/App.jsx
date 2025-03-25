@@ -35,7 +35,7 @@ function App() {
           <div className="container mx-auto p-4 flex-grow">
             <AppRoutes />
           </div>
-          <ChatN8N/>
+          
           <Footer />
         </div>
       </div>
@@ -47,6 +47,8 @@ function AppRoutes() {
  const { user, isLoggedIn } = useContext(AuthContext);
 
   return (
+ <>
+
     <Routes>
        {/* Public Route: Home */}
       <Route path="/" element={<HomePage />} />
@@ -98,6 +100,11 @@ function AppRoutes() {
 
       <Route path="*" element={<NotFound />} />
     </Routes>
+    
+  { isLoggedIn && <ChatN8N/> }
+ </>
+
+
   );
 }
 
